@@ -1,2 +1,3 @@
-# Blog-App
-This is my new blog app
+
+# Blogging-Platform
+A full-featured blogging platform.
