@@ -34,27 +34,26 @@ const ListBlog = () => {
   },[])
 
   return (
-    <div className='flex-1 pt-5 px-5 sm:pt-12  sm:pl-16 bg-blue-50/50'>
-      <h1>All blogs</h1>
+    <div className='flex-1 p-6 md:p-12 bg-[var(--color-background)] overflow-y-auto'>
+      <h2 className="font-editorial text-3xl font-bold text-[var(--color-text-main)] mb-8 tracking-tight">All Articles</h2>
 
-      <div className='relative h-4/5 mt-4 max-w-4xl overflow-x-auto shadow rounded-lg scroll-hide bg-white'>
-        <table className='w-full text-sm text-gray-500'>
-          <thead className='text-xs text-gray-600 text-left uppercase'>
+      <div className='w-full overflow-x-auto border border-[var(--color-border)] rounded-sm bg-[var(--color-surface)] shadow-[var(--shadow-editorial-sm)]'>
+        <table className='w-full text-sm text-left whitespace-nowrap'>
+          <thead className='text-xs uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)] bg-[var(--color-background)]'>
             <tr>
-              <th scope='col' className='px-2 py-4 xl:px-6'> # </th>
-              <th scope='col' className='px-2 py-4'> Blog Title </th>
-              <th scope='col' className='px-2 py-4 max-sm:hidden'> Date </th>
-              <th scope='col' className='px-2 py-4 max-sm:hidden'> Status </th>
-              <th scope='col' className='px-2 py-4'> Actions </th>
+              <th scope='col' className='px-6 py-5 font-semibold'>#</th>
+              <th scope='col' className='px-6 py-5 font-semibold'>Title</th>
+              <th scope='col' className='px-6 py-5 font-semibold hidden sm:table-cell'>Date</th>
+              <th scope='col' className='px-6 py-5 font-semibold hidden sm:table-cell'>Status</th>
+              <th scope='col' className='px-6 py-5 font-semibold'>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='divide-y divide-[var(--color-border)]'>
             {blogs.map((blog, index)=> {
               return <BlogTableItem key={blog._id} blog={blog} fetchBlogs={fetchBlogs} index={index + 1}/>
             })}
           </tbody>
         </table>
-
       </div>
     </div>
   );

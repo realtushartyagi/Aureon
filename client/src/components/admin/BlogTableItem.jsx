@@ -42,18 +42,20 @@ const BlogTableItem = ({blog, fetchBlogs, index}) => {
     }
 
   return (
-    <tr className='border-y border-gray-300'>
-        <th className='px-2 py-4'>{index}</th>
-        <td className='px-2 py-4'>{title}</td>
-        <td className='px-2 py-4 max-sm:hidden'>{BlogDate.toDateString()}</td>
-        <td className='px-2 py-4 max-sm:hidden'>
-            <p className={`${blog.isPublished ? "text-green-600" : "text-orange-700" }`}
-            >{blog.isPublished ? 'Published' : 'Unpublished'}</p>
+    <tr className='hover:bg-[var(--color-background)] transition-colors'>
+        <th className='px-6 py-5 font-normal text-[var(--color-text-muted)]'>{index}</th>
+        <td className='px-6 py-5 font-medium text-[var(--color-text-main)] truncate max-w-xs'>{title}</td>
+        <td className='px-6 py-5 hidden sm:table-cell text-[var(--color-text-muted)]'>{BlogDate.toDateString()}</td>
+        <td className='px-6 py-5 hidden sm:table-cell'>
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-widest ${blog.isPublished ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800" }`}
+            >{blog.isPublished ? 'Published' : 'Draft'}</span>
         </td>
 
-        <td className='px-2 py-4 flex text-xs gap-3'>
-            <button onClick={togglePublish} className='border px-2 py-0.5 mt-1 rounded cursor-pointer'>{blog.isPublished ? 'Unpublish' : 'Publish'}</button>
-            <img src={assets.cross_icon} className='w-8 hover:scale-110 transition-all cursor-pointer' alt="" onClick={deletedBlog} />
+        <td className='px-6 py-5'>
+          <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-widest">
+            <button onClick={togglePublish} className='text-[var(--color-primary)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer'>{blog.isPublished ? 'Unpublish' : 'Publish'}</button>
+            <button onClick={deletedBlog} className='text-red-600 hover:text-red-800 transition-colors cursor-pointer'>Delete</button>
+          </div>
         </td>
     </tr>
   );

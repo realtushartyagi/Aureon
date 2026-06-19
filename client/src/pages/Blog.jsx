@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { comments_data } from '../assets/assets'; 
 import { assets } from '../assets/assets';
 import Navbar from '../components/Navbar';
 import { useParams } from 'react-router-dom';
-import { blog_data } from '../assets/assets';
 import Moment from 'moment';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
@@ -14,7 +12,6 @@ import { Toaster, toast } from 'react-hot-toast';
 const Blog = () => {
 
   const {id} = useParams()
-
   const {axios} = useAppContext()
 
   const [data, setData] = useState(null)
@@ -32,101 +29,147 @@ const Blog = () => {
   }
 
   const fetchComments = async () => {
-  try {
-    const {data} = await axios.post('/api/blog/comments', {blogId: id})
-    if (data.success) {
-      setComments(data.comments)
-    } else{
-      toast.error(data.message);
+    try {
+      const {data} = await axios.post('/api/blog/comments', {blogId: id})
+      if (data.success) {
+        setComments(data.comments)
+      } else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
+  };
 
-const addComment = async (e) => {
-  e.preventDefault();
-  try {
-    const {data} = await axios.post('/api/blog/add-comment', {blog: id, name, content});
-    if (data.success){
-      toast.success(data.message)
-      setName('')
-      setContent('')
-    } else {
-      toast.error(data.message);
+  const addComment = async (e) => {
+    e.preventDefault();
+    try {
+      const {data} = await axios.post('/api/blog/add-comment', {blog: id, name, content});
+      if (data.success){
+        toast.success(data.message)
+        setName('')
+        setContent('')
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
-  } catch (error) {
-    toast.error(error.message);
-  }
-} 
+  } 
 
   useEffect(()=> {
     fetchBlogData()
     fetchComments()
-    
   }, [])
 
-  return data ?(
-    <div className='relative'>
-      <img src={assets.gradientBackground} alt="" className='absolute -top-50 -z-1 opacity-50' />
-
+  return data ? (
+    <div className='min-h-screen flex flex-col bg-[var(--color-background)]'>
       <Navbar/>
 
-      <div className='text-center mt-20 text-gray-600'>
-        <p className='text-primary py-4 font-medium' >Published on {Moment(data.createdAt).format('MMMM Do YYYY')}</p>
-        <h1 className='text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800'>{data.title}</h1>
-        <h2 className='my-5 max-w-lg truncate mx-auto'>A simple Step-by-Step Guide to Managing Your Lifestyle</h2>
-        <p className='inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text--primary'>Michael Brown</p>
-      </div>
+      <main className='flex-1 pb-24'>
+        {/* Article Header */}
+        <header className='px-6 pt-20 pb-12 sm:pt-32 sm:pb-16 max-w-4xl mx-auto text-center'>
+          <p className='text-xs font-semibold uppercase tracking-widest text-[var(--color-primary)] mb-6'>
+            {data.category}
+          </p>
+          <h1 className='font-editorial text-4xl sm:text-6xl font-bold leading-[1.15] text-[var(--color-text-main)] mb-8 tracking-tight'>
+            {data.title}
+          </h1>
+          <div className='flex items-center justify-center gap-4 text-sm text-[var(--color-text-muted)]'>
+            <span className='font-medium text-[var(--color-text-main)]'>Michael Brown</span>
+            <span>&bull;</span>
+            <span>{Moment(data.createdAt).format('MMMM Do, YYYY')}</span>
+          </div>
+        </header>
 
-      <div className='mx-5 max-w-5xl md:mx-auto my-10 mt-6'>
-        <img src={data.image} alt="" className='rounded-3xl mb-5' />
-
-        <div className='rich-text max-w-3xl mx-auto' dangerouslySetInnerHTML={{__html: data.description}}></div>
-
-        {/*Comments Section */}
-        <div className='mt-14 mb-10 max-w-3xl mx-auto'>
-          <p className='font-semibold mb-4'>Comments ({comments.length})</p>
-          <div className='flex flex-col gap-4'>
-            {comments.map((item, index) =>(
-              <div key={index} className='relative bg-primary/2 border border-primary/5 max-w-xl p-4 rounded text-gray-600' >
-                <div className='flex items-center gap-2 mb-2'>
-                  <img src={assets.user_icon} alt="" className='w-6' />
-                  <p className='font-medium'>{item.name}</p>
-                </div>
-                <p className='text-sm max-w-md ml-8'>{item.content}</p>
-                <div className='absolute right-4 bottom--3 flex items-center gap-2 text-xs'>{Moment(item.createdAt).fromNow()}</div>
-              </div>
-            ))}
-
+        {/* Hero Image */}
+        <div className='max-w-5xl mx-auto px-6 mb-16'>
+          <div className='aspect-video overflow-hidden border border-[var(--color-border)] rounded-sm'>
+            <img src={data.image} alt={data.title} className='w-full h-full object-cover' />
           </div>
         </div>
-            {/* Add Comment Section */}
-        <div className='max-w-3xl mx-auto'>
-            <p className='font-semibold mb-4'>Add your comment</p>
-            <form onSubmit={addComment} className='flex flex-col items-start gap-4 max-w-lg'>
 
-              <input onChange={(e) => setName(e.target.value)} value={name} type="text" placeholder='Name' required className='w-full p-2 border border-gray-300 rounded outline-none' />
+        {/* Article Content */}
+        <article className='px-6'>
+          <div className='rich-text max-w-[680px] mx-auto' dangerouslySetInnerHTML={{__html: data.description}}></div>
+        </article>
 
-              <textarea onChange={(e) => setContent(e.target.value)} value={content} placeholder='Comment' className='w-full p-2 border border-gray-300 rounded outline-none h-48' required></textarea>
-              <button type='submit' className='bg-primary text-white rounded p-2 px--8 hover:scale-102 transition-all cursor-pointer'>Submit</button>
+        {/* Share Section */}
+        <div className='max-w-[680px] mx-auto px-6 mt-16 pt-8 border-t border-[var(--color-border)]'>
+          <p className='text-xs uppercase tracking-widest font-semibold text-[var(--color-text-muted)] mb-4'>Share this essay</p>
+          <div className='flex gap-4'>
+            <button className='w-10 h-10 rounded-full border border-[var(--color-border)] flex items-center justify-center hover:border-[var(--color-text-main)] transition-colors'>
+              <img src={assets.facebook_icon} className='w-4 opacity-70' alt="Facebook" />
+            </button>
+            <button className='w-10 h-10 rounded-full border border-[var(--color-border)] flex items-center justify-center hover:border-[var(--color-text-main)] transition-colors'>
+              <img src={assets.twitter_icon} className='w-4 opacity-70' alt="Twitter" />
+            </button>
+          </div>
+        </div>
 
+        {/* Comments Section */}
+        <section className='max-w-[680px] mx-auto px-6 mt-20'>
+          <h3 className='font-editorial text-2xl font-bold text-[var(--color-text-main)] mb-8 border-b border-[var(--color-border)] pb-4'>
+            Responses ({comments.length})
+          </h3>
+          
+          {/* Add Comment Form */}
+          <div className='mb-12 bg-[var(--color-surface)] p-6 sm:p-8 border border-[var(--color-border)] rounded-sm'>
+            <h4 className='text-sm font-semibold uppercase tracking-widest text-[var(--color-text-main)] mb-6'>Leave a response</h4>
+            <form onSubmit={addComment} className='flex flex-col gap-5'>
+              <div>
+                <input 
+                  onChange={(e) => setName(e.target.value)} 
+                  value={name} 
+                  type="text" 
+                  placeholder='Your Name' 
+                  required 
+                  className='w-full px-4 py-3 bg-[var(--color-background)] border border-[var(--color-border)] outline-none focus:border-[var(--color-text-main)] transition-colors rounded-sm text-[var(--color-text-main)] text-sm' 
+                />
+              </div>
+              <div>
+                <textarea 
+                  onChange={(e) => setContent(e.target.value)} 
+                  value={content} 
+                  placeholder='Share your thoughts...' 
+                  className='w-full px-4 py-3 bg-[var(--color-background)] border border-[var(--color-border)] outline-none focus:border-[var(--color-text-main)] transition-colors rounded-sm text-[var(--color-text-main)] text-sm h-32 resize-y' 
+                  required
+                ></textarea>
+              </div>
+              <div className='flex justify-end mt-2'>
+                <button 
+                  type='submit' 
+                  className='bg-[var(--color-text-main)] text-white px-8 py-2.5 rounded-full text-sm font-medium tracking-wide hover:bg-[var(--color-primary)] transition-colors shadow-[var(--shadow-editorial-sm)]'
+                >
+                  Publish
+                </button>
+              </div>
             </form>
-        </div>
-            {/* Share Buttons */}
-        <div className='my-24 max-w-3xl mx-auto'>
-            <p className='font-semibold my-4'>Share this article on social media</p>
-            <div className='flex'>
-              <img src={assets.facebook_icon} width={50} alt="" />
-              <img src={assets.twitter_icon} width={50} alt="" />
-              <img src={assets.googleplus_icon} width={50} alt="" />
-            </div>
-        </div>
-      </div>
-      <Footer/>
+          </div>
 
+          {/* Comment List */}
+          <div className='flex flex-col gap-8'>
+            {comments.map((item, index) =>(
+              <div key={index} className='pb-8 border-b border-[var(--color-border)] last:border-0'>
+                <div className='flex items-center gap-3 mb-3'>
+                  <div className='w-8 h-8 rounded-full bg-[var(--color-border)] flex items-center justify-center overflow-hidden'>
+                    <img src={assets.user_icon} alt="" className='w-4 opacity-50' />
+                  </div>
+                  <div>
+                    <p className='font-medium text-sm text-[var(--color-text-main)]'>{item.name}</p>
+                    <p className='text-xs text-[var(--color-text-muted)]'>{Moment(item.createdAt).fromNow()}</p>
+                  </div>
+                </div>
+                <p className='text-sm leading-relaxed text-[var(--color-text-main)]'>{item.content}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </main>
+      <Footer/>
     </div>
-  ): <Loader/>
+  ) : <Loader/>
 }
 
 export default Blog;

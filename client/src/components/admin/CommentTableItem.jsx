@@ -41,23 +41,24 @@ const deleteComment = async() => {
 }
 
   return (
-    <tr className='order-y border-gray-300'>
-        <td className='px-6 py-4'>
-            <b className='font-medium text-gray-600'>Blog</b> : {blog.title}
-            <br />
-            <br />
-            <b className='font-medium text-gray-600'>Name</b> : {comment.name}
-            <br />
-            <b className='font-medium text-gray-600'>Comment</b> : {comment.content}
+    <tr className='hover:bg-[var(--color-background)] transition-colors'>
+        <td className='px-6 py-5 whitespace-normal min-w-[300px]'>
+            <div className='mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]'>
+              {blog.title}
+            </div>
+            <div className='mb-1'>
+              <span className='font-medium text-[var(--color-text-main)] text-sm'>{comment.name}</span>
+            </div>
+            <p className='text-sm text-[var(--color-text-muted)] leading-relaxed italic'>"{comment.content}"</p>
         </td>
-        <td>
+        <td className='px-6 py-5 hidden sm:table-cell text-[var(--color-text-muted)] text-sm'>
             {BlogData.toLocaleDateString()}
         </td>
-        <td className='px-6 py-4'>
-            <div className='inline-flex items-center gap-4'>
+        <td className='px-6 py-5'>
+            <div className='flex items-center gap-4 text-xs font-medium uppercase tracking-widest'>
                 {!comment.isApproved ? 
-                <img onClick={approveComment} src={assets.tick_icon} className='w-5 hover:scale-110 transition-all cursor-pointer' /> : <p className='text-xs border border-green-600 bg-green text-green-600 rounded-full px-3 py-1'> Approved</p> }
-                <img onClick={deleteComment} src={assets.bin_icon} alt="" className='w-5 hover:scale-110 transition-all cursor-pointer' />
+                <button onClick={approveComment} className='text-[var(--color-primary)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer'>Approve</button> : <span className='text-green-700 bg-green-100 px-2 py-0.5 rounded-full'>Approved</span> }
+                <button onClick={deleteComment} className='text-red-600 hover:text-red-800 transition-colors cursor-pointer'>Delete</button>
             </div>
         </td>
     </tr>

@@ -14,10 +14,10 @@ import { useAppContext } from './context/AppContext';
 
 const App = () => {
 
-  const {token} =useAppContext()
+  const {token} = useAppContext()
 
   return (
-    <div>
+    <div className='min-h-screen bg-[var(--color-background)] text-[var(--color-text-main)] antialiased font-sans selection:bg-[var(--color-primary)] selection:text-white'>
       <Toaster/>
       <Routes>
         <Route path='/' element={<Home/>} />

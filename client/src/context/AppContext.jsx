@@ -18,19 +18,33 @@ export const AppProvider = ({children}) => {
     const [token, setToken] = useState(null)
     const [blogs, setBlogs] = useState([])
     const [input, setInput] = useState('')
+    
+    // Theme State
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
 
     const fetchBlogs = async ()=> {
         try {
             const {data} = await axios.get('/api/blog/all');
-            // console.log(data.blogs);
-            
             data.success ? setBlogs(data.blogs) : toast.error(data.message)
             
         } catch (error) {
             toast.error("Blog Not Fetches");
         }
     }
-    // console.log(blogs,"From conext");
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
 
     useEffect(()=> {
         fetchBlogs();
@@ -41,13 +55,10 @@ export const AppProvider = ({children}) => {
         }
     }, [])
     
-
-    
     const value = {
-    axios: axios, // ✅ explicit
-    navigate, token, setToken, blogs, setBlogs, input, setInput
+      axios: axios,
+      navigate, token, setToken, blogs, setBlogs, input, setInput, theme, toggleTheme
     };
-
     
     return (
     <AppContext.Provider value={value}>

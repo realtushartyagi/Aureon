@@ -34,64 +34,66 @@ const Dashboard = () => {
   },[])
 
   return (
-    <div className='flex-1 p-4 md:p-10 bg-blue-50/50 '>
-      <div className='flex flex-wrap gap-4'>
-      <div className='flex items-center gap-4 bg-white  p-4 min-w-58 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={assets.dashboard_icon_1} alt="" />
-          <div>
-            <p className='text-xl font--semibold text-gray-600'>{dashboardData?.blogs}</p>
-            <p className='text-gray-400 font-light'>Blogs</p>
-          </div>
+    <div className='flex-1 p-6 md:p-12 bg-[var(--color-background)] overflow-y-auto'>
+      <h2 className="font-editorial text-3xl font-bold text-[var(--color-text-main)] mb-8 tracking-tight">Overview</h2>
       
-      </div>
+      <div className='flex flex-wrap gap-6 mb-12'>
+        <div className='flex-1 min-w-[240px] flex items-center gap-5 bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-sm shadow-[var(--shadow-editorial-sm)] hover:shadow-[var(--shadow-editorial-md)] transition-shadow cursor-pointer'>
+            <div className='w-12 h-12 flex items-center justify-center bg-[var(--color-background)] border border-[var(--color-border)] rounded-full'>
+              <img src={assets.dashboard_icon_1} alt="Blogs" className='w-5 opacity-70' />
+            </div>
+            <div>
+              <p className='text-3xl font-editorial font-bold text-[var(--color-text-main)]'>{dashboardData?.blogs}</p>
+              <p className='text-xs uppercase tracking-widest text-[var(--color-text-muted)] font-semibold mt-1'>Published</p>
+            </div>
+        </div>
 
-      
-      <div className='flex items-center gap-4 bg-white  p-4 min-w-58 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={assets.dashboard_icon_2} alt="" />
-          <div>
-            <p className='text-xl font--semibold text-gray-600'>{dashboardData?.comments}</p>
-            <p className='text-gray-400 font-light'>Comments</p>
-          </div>
-      
-      </div>
+        <div className='flex-1 min-w-[240px] flex items-center gap-5 bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-sm shadow-[var(--shadow-editorial-sm)] hover:shadow-[var(--shadow-editorial-md)] transition-shadow cursor-pointer'>
+            <div className='w-12 h-12 flex items-center justify-center bg-[var(--color-background)] border border-[var(--color-border)] rounded-full'>
+              <img src={assets.dashboard_icon_2} alt="Comments" className='w-5 opacity-70' />
+            </div>
+            <div>
+              <p className='text-3xl font-editorial font-bold text-[var(--color-text-main)]'>{dashboardData?.comments}</p>
+              <p className='text-xs uppercase tracking-widest text-[var(--color-text-muted)] font-semibold mt-1'>Comments</p>
+            </div>
+        </div>
 
-      
-      <div className='flex items-center gap-4 bg-white  p-4 min-w-58 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={assets.dashboard_icon_3} alt="" />
-          <div>
-            <p className='text-xl font--semibold text-gray-600'>{dashboardData?.drafts}</p>
-            <p className='text-gray-400 font-light'>Drafts</p>
-          </div>
-      </div>
-      </div>
-
-      <div>
-        <div className='flex items-center gap-3 m-4 mt-6 text-gray-400'>
-          <img src={assets.dashboard_icon_4} alt="" />
-          <p>Latest Blogs</p>
+        <div className='flex-1 min-w-[240px] flex items-center gap-5 bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-sm shadow-[var(--shadow-editorial-sm)] hover:shadow-[var(--shadow-editorial-md)] transition-shadow cursor-pointer'>
+            <div className='w-12 h-12 flex items-center justify-center bg-[var(--color-background)] border border-[var(--color-border)] rounded-full'>
+              <img src={assets.dashboard_icon_3} alt="Drafts" className='w-5 opacity-70' />
+            </div>
+            <div>
+              <p className='text-3xl font-editorial font-bold text-[var(--color-text-main)]'>{dashboardData?.drafts}</p>
+              <p className='text-xs uppercase tracking-widest text-[var(--color-text-muted)] font-semibold mt-1'>Drafts</p>
+            </div>
         </div>
       </div>
+
+      <div className='mb-6 flex items-center gap-3'>
+        <div className='w-8 h-8 flex items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border)] rounded-full'>
+          <img src={assets.dashboard_icon_4} alt="Latest" className='w-4 opacity-60' />
+        </div>
+        <h3 className='font-editorial text-xl font-bold text-[var(--color-text-main)]'>Recent Articles</h3>
+      </div>
       
-      <div className='relative max-w-4xl overflow-x-auto shadow rounded-lg scroll-hide bg-white'>
-        <table className='w-full text-sm text-gray-500'>
-          <thead className='text-xs text-gray-600 text-left uppercase'>
+      <div className='w-full overflow-x-auto border border-[var(--color-border)] rounded-sm bg-[var(--color-surface)] shadow-[var(--shadow-editorial-sm)]'>
+        <table className='w-full text-sm text-left whitespace-nowrap'>
+          <thead className='text-xs uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)] bg-[var(--color-background)]'>
             <tr>
-              <th scope='col' className='px-2 py-4 xl:px-6'> # </th>
-              <th scope='col' className='px-2 py-4'> Blog Title </th>
-              <th scope='col' className='px-2 py-4 max-sm:hidden'> Date </th>
-              <th scope='col' className='px-2 py-4 max-sm:hidden'> Status </th>
-              <th scope='col' className='px-2 py-4'> Actions </th>
+              <th scope='col' className='px-6 py-5 font-semibold'>#</th>
+              <th scope='col' className='px-6 py-5 font-semibold'>Title</th>
+              <th scope='col' className='px-6 py-5 font-semibold hidden sm:table-cell'>Date</th>
+              <th scope='col' className='px-6 py-5 font-semibold hidden sm:table-cell'>Status</th>
+              <th scope='col' className='px-6 py-5 font-semibold'>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='divide-y divide-[var(--color-border)]'>
             {dashboardData?.recentBlogs.map((blog, index)=> {
               return <BlogTableItem key={blog._id} blog={blog} fetchBlogs={fetchDashboard} index={index + 1}/>
             })}
           </tbody>
         </table>
-
       </div>
-      
     </div>
   );
 }
